@@ -91,6 +91,8 @@ Remember: You are a supportive companion, not a replacement for professional men
             
             # Convert to single score (-1 to 1)
             # Assuming the model returns NEGATIVE, NEUTRAL, POSITIVE scores
+            if not results or len(results) == 0 or not isinstance(results[0], (list, tuple)):
+                return 0.0
             scores = {result['label']: result['score'] for result in results[0]}
             
             # Calculate weighted sentiment score
