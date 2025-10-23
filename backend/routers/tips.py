@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 
 from database import get_db
@@ -43,7 +43,7 @@ async def get_daily_tip(
 
 @router.get("/", response_model=List[WellnessTip])
 async def get_all_tips(
-    category: str = None,
+    category: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
     """Get all wellness tips, optionally filtered by category."""
