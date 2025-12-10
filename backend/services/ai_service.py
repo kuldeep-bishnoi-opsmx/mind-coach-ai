@@ -1,5 +1,4 @@
 import openai
-from transformers import pipeline
 import os
 from dotenv import load_dotenv
 from typing import List, Dict, Optional
@@ -11,16 +10,8 @@ load_dotenv()
 # Initialize OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Initialize sentiment analysis pipeline (will download model on first use)
-try:
-    sentiment_analyzer = pipeline(
-        "sentiment-analysis",
-        model="cardiffnlp/twitter-roberta-base-sentiment-latest",
-        return_all_scores=True
-    )
-except Exception as e:
-    print(f"Warning: Could not load sentiment analysis model: {e}")
-    sentiment_analyzer = None
+# Sentiment analysis is disabled (transformers library not installed to reduce dependencies)
+sentiment_analyzer = None
 
 class AIService:
     def __init__(self):
@@ -100,6 +91,8 @@ Remember: You are a supportive companion, not a replacement for professional men
             
             # Convert to single score (-1 to 1)
             # Assuming the model returns NEGATIVE, NEUTRAL, POSITIVE scores
+            if not results or len(results) == 0 or not isinstance(results[0], (list, tuple)):
+                return 0.0
             scores = {result['label']: result['score'] for result in results[0]}
             
             # Calculate weighted sentiment score

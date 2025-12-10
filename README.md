@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# mind-coach-ai
-=======
 # Mind Coach AI Agent
 
 A full-stack personal mental wellness assistant that provides AI-driven supportive conversations, mood tracking, and daily wellness tips.
@@ -98,4 +95,3 @@ npm run dev
 ## License
 
 MIT License
->>>>>>> f0d8f6a (Initial commit for mind-coach-ai project)

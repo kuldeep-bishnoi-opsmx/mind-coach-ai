@@ -48,7 +48,7 @@ def verify_token(token: str, credentials_exception):
     """Verify and decode a JWT token."""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        email: str = payload.get("sub")
+        email: Optional[str] = payload.get("sub")
         if email is None:
             raise credentials_exception
         token_data = TokenData(email=email)
@@ -75,7 +75,7 @@ def authenticate_user(db: Session, email: str, password: str) -> Optional[User]:
         return None
     return user
 
-def create_user(db: Session, email: str, username: str, password: str, full_name: str = None) -> User:
+def create_user(db: Session, email: str, username: str, password: str, full_name: Optional[str] = None) -> User:
     """Create a new user."""
     hashed_password = get_password_hash(password)
     db_user = User(
@@ -101,6 +101,8 @@ def get_current_user(
     )
     
     token_data = verify_token(credentials.credentials, credentials_exception)
+    if token_data.email is None:
+        raise credentials_exception
     user = get_user_by_email(db, email=token_data.email)
     if user is None:
         raise credentials_exception
